@@ -2,9 +2,6 @@
 #include<string>
 using namespace std;
 
-/*
-	Conta todas as letras 'letra' contidas em 'texto'
-*/
 int contaLetras( string texto)
 {
     int qtd;
@@ -12,10 +9,7 @@ int contaLetras( string texto)
     return qtd;
 }
 
-/*
-	Substitui todas as ocorrencias de 'letra1' por 'letra2' contidas em 'texto'
-*/
-void substituirLetra(char letra1,char letra2, string texto)
+string substituirLetra(char letra1,char letra2, string texto)
 {
     int i;
     int count=contaLetras(texto);
@@ -27,59 +21,82 @@ void substituirLetra(char letra1,char letra2, string texto)
             if(texto[i]==letra2)
             texto[i]=letra1;
     }
+    return texto;
 }
 
-/*
-	Conta todas as ocorrencias de 'palavra' contidas em 'texto'
-*/
-int contaPalavras(string palavra, string texto)
-{
-    int i, n;
-for(i=0;i<'.';i++)
-    if(texto[i]==palavra[i])
-    n++;
-return n;
 
+void contaPalavras()
+{
+    int comecouPalavra = 0, numPalavras = 0, numLinhas = 0, numCaracteres = 0;
+    FILE *descritor;
+    char arquivo[50];
+
+    char *caracter;    
+    printf("Digite o arquivo que deseja abrir: ");
+    gets(arquivo);
+    descritor = fopen(arquivo, "r");
+    while (!feof(descritor)) {
+          fread(caracter, 1, 1, descritor);
+          numCaracteres++;
+          if  ((*caracter!=' ') && (*caracter!='\n') && (!comecouPalavra)) {
+             comecouPalavra = 1;
+          }
+          if  (((*caracter==' ') || (*caracter == '\n')) && (comecouPalavra)) {
+             comecouPalavra = 0;
+             numPalavras++;
+          }
+          if (*caracter=='\n') {
+             numLinhas++;
+             }
+        return numPalavras;
 
 }
 
-/*
-	Substitui todas as ocorrencias de 'palavra1' por 'palavra2' em 'texto'
-*/
-void substituirPalavras(string palavra1, string palavra2, string texto)
+
+string substituirPalavras(string palavra1, string palavra2, string texto)
 {
+    int i;
+    int count=contaLetras(texto);
+    for(i=0;i<count; i++)
+    {
+        if(texto[i]==palavra1)
+            texto[i]=palavra2;
+        else
+            if(texto[i]==palavra2)
+            texto[i]=palavra1;
+    }
+    return texto; 
 }
 
 int main(){
-    int ai, ou, np;
-    string txt, palavra;
+    int ai, ou, np, oh;
+    string txt, palavra, text, p1, p2, tx, t;
     char letter1, letter2;
-	cout << "\nDigite texto. Termine seu texto com ponto final e digite 'terminar' para terminar: ";
-	getline(cin,txt);
-	while(txt!='r')
-	{
+	cout << "\nDigite texto: ";
+    getline(cin,txt);
+
 	ai=contaLetras(txt);
 
 	cout<<"\n"<<ai<<" letras nesse texto.";
 
+	cout<<"\nDigite texto: ";
+	getline(cin, text);
     cout<<"\nDigite uma letra: ";
     cin>>letter1;
     cout<<"\nDigite a outra letra: ";
     cin>>letter2;
-    substituirLetra(letter1, letter2, txt);
+    text=substituirLetra(letter1, letter2, text);
 
-    cout<<"\nTexto com as letras substituidas: "<<txt;
-
+    cout<<"\nTexto com as letras substituidas: "<<text;
+    contaPalavras();
+    
+    cout<<"\nDigite texto: ";
+	getline(cin, t);
     cout<<"\nDigite uma palavra: ";
-    getline(cin,palavra);
-
-    np=contaPalavras(palavra, txt);
-
-    cout<<"\nA palavra "<<palavra<<" apareceu"<<np<<" vezes nesse texto";
-
-    cout << "\nDigite texto. Termine seu texto com ponto final e digite 'terminar' para terminar: ";
-	getline(cin,txt);
-	}
-
+    cin>>p1;
+    cout<<"\nDigite a outra palavra: ";
+    cin>>p2;
+    t=substituirPalvra(p1, p2, t);
+    
 	return 0;
 }
